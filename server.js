@@ -21,8 +21,7 @@ const proxyConfig = {
 
 const bot = mineflayer.createBot({
   username: randStr(randInt(7, 14)),
-  ...(config.useProxy ? proxyConfig : config.server),
-  version: "1.8.9"
+  ...(config.proxy.enabled ? { ...proxyConfig, version : config.server.version } : config.server),
 })
 
 const { activateItemInSlot, leftClickWindow } = require("./libs/botting.js")
