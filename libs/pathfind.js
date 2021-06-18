@@ -1,6 +1,6 @@
 const { pathfinder, Movements, goals: { GoalFollow, GoalNear } } = require("mineflayer-pathfinder")
 
-const initalizePathfinderMoves = bot => {
+const initalizePathfinder = bot => {
   bot.loadPlugin(pathfinder)
   const mcData = require("minecraft-data")(bot.version)
   const defaultMoves = new Movements(bot, mcData)
@@ -22,7 +22,7 @@ const resetPathfinder = bot => {
 }
 
 module.exports = {
-  initalizePathfinderMoves,
+  initalizePathfinder,
   followLiving,
   gotoPosition,
   resetPathfinder

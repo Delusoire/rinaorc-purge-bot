@@ -44,8 +44,8 @@ const onCommand = (sender, argv, bot) => {
   let result
   try {
     result = command(sender, argv, bot)
-  } catch(error) {
-    result = error
+  } catch(err) {
+    result = err
   }
   bot.chat(`/msg ${sender.username} ${result}`)
 }

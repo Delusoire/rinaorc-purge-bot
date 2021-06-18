@@ -1,25 +1,42 @@
 const { randInt, randStr } = require("./libs/util.js")
-const { activateItemInSlot, leftClickWindow } = require("./libs/botting.js")
-const { initalizePathfinderMoves } = require("./libs/pathfind.js")
-const { onCommand } = require("./libs/commands.js")
+
+const mineflayer = require("mineflayer")
+const socks= require('socks').SocksClient
 
 const config = require("./config.json")
 
-const mineflayer = require("mineflayer")
-
-const masters = new Set(config.masters)
+const proxyConfig = {
+  connect: client => {
+    socks.createConnection({
+      proxy: config.proxy,
+      command: 'connect',
+      destination: config.server
+    }, (err, info) => {
+      if (err) return console.log(err)
+      client.setSocket(info.socket)
+      client.emit('connect')
+    })
+  }
+}
 
 const bot = mineflayer.createBot({
   username: randStr(randInt(7, 14)),
-  host: "play.rinaorc.com",
+  ...(config.useProxy ? proxyConfig : config.server),
   version: "1.8.9"
 })
 
+const { activateItemInSlot, leftClickWindow } = require("./libs/botting.js")
+const { initalizePathfinder } = require("./libs/pathfind.js")
+const { onCommand } = require("./libs/commands.js")
+
+const wheels = new Set(config.wheels)
+
+bot.on("kicked", reason => console.log(reason.toAnsi()))
 bot.on("message", message => console.log(message.toAnsi()))
 
 bot.once("spawn", _ => {
   console.log(`:: Joining as ${bot.username}`)
-  initalizePathfinderMoves(bot)
+  initalizePathfinder(bot)
 
   bot.addChatPatternSet(
     "login_required",
@@ -85,7 +102,7 @@ const onGameJoin = _ => {
   console.log("Joined Game!")
 
   bot.on("chat:private_message", ([[sender, message]]) => {
-    if (masters.has(sender))
+    if (wheels.has(sender))
       onCommand(bot.players[sender], message.split(" "), bot)
   })
 }
