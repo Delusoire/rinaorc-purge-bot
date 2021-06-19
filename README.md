@@ -7,5 +7,5 @@ To setup this bot, first install <git> and <nodejs> then execute the following c
 # npm install
 
 To kickstart the AI's cognitive subsystem, all you need is to run:
-# node start
+# npm start
 ```
