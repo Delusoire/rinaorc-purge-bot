@@ -6,6 +6,7 @@ const initalizePathfinder = bot => {
   const defaultMoves = new Movements(bot, mcData)
   defaultMoves.canDig = false
   defaultMoves.placeCost = 999999
+  defaultMoves.maxDropDown = 999999
   bot.pathfinder.setMovements(defaultMoves)
 }
 
