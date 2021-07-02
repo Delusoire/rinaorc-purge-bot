@@ -30,7 +30,7 @@ const { onCommand } = require("./libs/commands.js")
 
 const wheels = new Set(config.wheels)
 
-bot.on("kicked", reason => console.log(reason.toAnsi()))
+bot.on("kicked", reason => console.log(reason))
 bot.on("message", message => console.log(message.toAnsi()))
 
 bot.once("spawn", _ => {
